@@ -7,11 +7,6 @@ body {
   padding: 0;
 }
 
-#lobby {
-  text-align: center;
-  padding: 20px;
-}
-
 input {
   padding: 8px;
   margin: 5px;
@@ -31,6 +26,11 @@ button {
 
 button:hover {
   background-color: #e64a19;
+}
+
+#lobby {
+  text-align: center;
+  padding: 20px;
 }
 
 #gameList {
