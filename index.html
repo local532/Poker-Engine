@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Online Poker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Lobby Section -->
+  <div id="lobby">
+    <h1>Online Poker</h1>
+    <input type="text" id="playerName" placeholder="Enter your name">
+    <button id="joinGameBtn">Join Game</button>
+    <button id="startGameBtn">Start Game (Host Only)</button>
+    <div id="playerList"></div>
+  </div>
+  
+  <!-- Game Area Section -->
+  <div id="gameArea" style="display: none;">
+    <div id="pokerTable">
+      <div id="communityCards"></div>
+      <div id="potDisplay">Pot: $0</div>
+      <div id="playerArea"></div>
+    </div>
+    <div id="actions">
+      <button id="betBtn">Bet</button>
+      <button id="checkBtn">Check</button>
+      <button id="foldBtn">Fold</button>
+    </div>
+    <div id="yourHand"></div>
+  </div>
+  
+  <!-- Socket.IO and client script -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-Bpc/d3lw6F/kbG7+Rl/ByJ3ouyPSfepZrb66OEvljOT2Bz9HjRy6vCLByqk27VQB" crossorigin="anonymous"></script>
+  <script src="poker.js"></script>
+</body>
+</html>
