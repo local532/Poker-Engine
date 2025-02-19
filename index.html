@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Online Poker Lobby</title>
+  <!-- Relaxed CSP to allow images and fonts from self -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; img-src 'self' data:;">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,7 +20,7 @@
       <h2>Join a Game</h2>
       <input type="text" id="playerName" placeholder="Your Name">
       <div id="gameList">
-        <!-- List of join-able games will be populated here -->
+        <!-- List of available games will be populated here -->
       </div>
     </div>
   </div>
