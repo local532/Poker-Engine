@@ -1,33 +1,82 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Poker Table</title>
-  <!-- Allow images from self, data URLs, and your GitHub Pages domain -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; img-src 'self' data: https://local532.github.io;">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div id="gameArea">
-    <div id="pokerTable">
-      <div id="communityCards"></div>
-      <div id="potDisplay">Pot: $0</div>
-      <div id="playerArea"></div>
-    </div>
-    <div id="actions">
-      <button id="startHandBtn">Start Hand</button>
-      <button id="dealFlopBtn">Deal Flop</button>
-      <button id="dealTurnBtn">Deal Turn</button>
-      <button id="dealRiverBtn">Deal River</button>
-      <button id="betBtn">Bet</button>
-      <button id="checkBtn">Check</button>
-      <button id="foldBtn">Fold</button>
-    </div>
-    <div id="yourHand"></div>
-  </div>
+// table.js
+const socket = io('http://localhost:3000'); // Connect to your local Node.js server
+const urlParams = new URLSearchParams(window.location.search);
+const gameId = urlParams.get('gameId');
+const playerRole = urlParams.get('playerRole'); // host or player
 
-  <!-- Socket.IO client library -->
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" crossorigin="anonymous"></script>
-  <script src="table.js"></script>
-</body>
-</html>
+const communityCardsDiv = document.getElementById('communityCards');
+const potDisplay = document.getElementById('potDisplay');
+const playerArea = document.getElementById('playerArea');
+const yourHandDiv = document.getElementById('yourHand');
+
+const startHandBtn = document.getElementById('startHandBtn');
+const dealFlopBtn = document.getElementById('dealFlopBtn');
+const dealTurnBtn = document.getElementById('dealTurnBtn');
+const dealRiverBtn = document.getElementById('dealRiverBtn');
+const betBtn = document.getElementById('betBtn');
+const checkBtn = document.getElementById('checkBtn');
+const foldBtn = document.getElementById('foldBtn');
+
+// Only the host should see the start hand button
+if (playerRole !== 'host') {
+  startHandBtn.style.display = 'none';
+}
+
+startHandBtn.addEventListener('click', () => {
+  socket.emit('startHand', { gameId });
+});
+dealFlopBtn.addEventListener('click', () => {
+  socket.emit('dealFlop', { gameId });
+});
+dealTurnBtn.addEventListener('click', () => {
+  socket.emit('dealTurn', { gameId });
+});
+dealRiverBtn.addEventListener('click', () => {
+  socket.emit('dealRiver', { gameId });
+});
+betBtn.addEventListener('click', () => {
+  const amount = parseInt(prompt("Enter bet amount:"));
+  if (!isNaN(amount)) {
+    socket.emit('bet', { gameId, amount });
+  }
+});
+checkBtn.addEventListener('click', () => {
+  socket.emit('check', { gameId });
+});
+foldBtn.addEventListener('click', () => {
+  socket.emit('fold', { gameId });
+});
+
+socket.on('gameState', (state) => {
+  // Update community cards with animation
+  communityCardsDiv.innerHTML = '';
+  state.communityCards.forEach(card => {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'card';
+    cardDiv.innerText = card.rank + card.suit;
+    communityCardsDiv.appendChild(cardDiv);
+  });
+  potDisplay.innerText = 'Pot: $' + state.pot;
+  // Update players area
+  playerArea.innerHTML = '';
+  state.players.forEach(player => {
+    const pDiv = document.createElement('div');
+    pDiv.className = 'playerInfo';
+    pDiv.innerText = `${player.name}: $${player.chips} ${player.status === 'folded' ? '(Folded)' : ''}`;
+    playerArea.appendChild(pDiv);
+  });
+});
+
+socket.on('yourHand', (hand) => {
+  yourHandDiv.innerHTML = '<h3>Your Hand</h3>';
+  hand.forEach(card => {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'card';
+    cardDiv.innerText = card.rank + card.suit;
+    yourHandDiv.appendChild(cardDiv);
+  });
+});
+
+socket.on('errorMessage', (msg) => {
+  alert(msg);
+});
