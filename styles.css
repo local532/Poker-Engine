@@ -1,0 +1,78 @@
+/* styles.css */
+body {
+  background-color: #2e7d32;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+#lobby {
+  text-align: center;
+  padding: 20px;
+}
+
+#pokerTable {
+  width: 800px;
+  height: 500px;
+  /* Replace 'felt.jpg' with your own felt background image or use a gradient */
+  background: url('felt.jpg') no-repeat center center;
+  background-size: cover;
+  margin: 20px auto;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#communityCards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 10px;
+}
+
+.card {
+  width: 80px;
+  height: 120px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  animation: deal 0.5s ease-out forwards;
+}
+
+@keyframes deal {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#potDisplay {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+}
+
+#playerArea {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+#actions {
+  text-align: center;
+  margin: 10px;
+}
+
+#yourHand {
+  text-align: center;
+  margin: 10px;
+}
