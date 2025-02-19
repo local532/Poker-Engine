@@ -14,12 +14,12 @@ hostGameBtn.addEventListener('click', () => {
 });
 
 socket.on('hostedGame', (data) => {
-  // Redirect the host to the game table page
+  // Redirect the host to the table page with gameId and role in URL
   window.location.href = 'table.html?gameId=' + data.gameId + '&playerRole=host';
 });
 
 socket.on('gameList', (games) => {
-  // Render the list of join-able games
+  // Render the list of joinable games
   gameListDiv.innerHTML = '';
   games.forEach(game => {
     const gameItem = document.createElement('div');
